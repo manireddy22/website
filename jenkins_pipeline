@@ -8,15 +8,23 @@ pipeline {
                 git 'https://github.com/manireddy22/website.git'
             }
         }
-    
         stage('Dockerimage_build'){
             steps {
                 sh 'sudo docker build -t manipal2209/capstone_01_image .'
-                sh 'sudo docker stop capstone_docker'
-                sh 'sudo docker rm capstone_docker'
-                sh 'sudo docker run -d -p 8081:80 --name capstone_docker manipal2209/capstone_01_image:latest'
+                sh '''#!/bin/bash
+                result=$( sudo docker inspect -f \'{{.State.Running}}\'  capstone_docker)
+                if [[ $result == "true" ]]; then
+                sudo docker stop capstone_docker
+                sudo docker rm capstone_docker
+                sudo docker run -d -p 8081:80 --name capstone_docker manipal2209/capstone_01_image:latest
+                else
+                sudo docker run -d -p 8081:80 --name capstone_docker manipal2209/capstone_01_image:latest
+                fi
+                '''
             }
-        }
+
+                
+        }      
         stage('Docker_push'){
             steps {
                 withCredentials([string(credentialsId: 'manipal2209', variable: 'docker_hubpwd')]) {
