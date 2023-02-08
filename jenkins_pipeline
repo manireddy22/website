@@ -1,0 +1,31 @@
+
+pipeline {
+    agent any
+
+    stages {
+        stage('scm') {
+            steps {
+                git 'https://github.com/manireddy22/website.git'
+            }
+        }
+    
+        stage('Dockerimage_build'){
+            steps {
+                sh 'sudo docker build -t manipal2209/capstone_01_image .'
+                sh 'sudo docker stop capstone_docker'
+                sh 'sudo docker rm capstone_docker'
+                sh 'sudo docker run -d -p 8081:80 --name capstone_docker manipal2209/capstone_01_image:latest'
+            }
+        }
+        stage('Docker_push'){
+            steps {
+                withCredentials([string(credentialsId: 'manipal2209', variable: 'docker_hubpwd')]) {
+                sh 'sudo docker login -u manipal2209 -p ${docker_hubpwd}'
+                sh 'sudo docker push manipal2209/capstone_01_image'
+                    
+                }
+                
+            }
+       }
+    }
+}
