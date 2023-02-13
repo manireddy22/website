@@ -1,0 +1,18 @@
+stage('Docker_container_run') {
+            steps {
+                sh '''#!/bin/bash
+                result=$(sudo docker inspect -f \'{{.State.Running}}\'  capstone_docker )
+                if [[ $result == "true" ]]; then
+                sudo docker stop capstone_docker
+                sudo docker rm capstone_docker
+                sudo docker run -d -p 8081:80 --name capstone_docker manipal2209/capstone_01_image:latest
+                elif [[ $result == "false" ]]; then
+                sudo docker rm capstone_docker
+                sudo docker run -d -p 8081:80 --name capstone_docker manipal2209/capstone_01_image:latest
+                else
+                sudo docker run -d -p 8081:80 --name capstone_docker manipal2209/capstone_01_image:latest
+                fi'''
+            }
+
+                
+        }      
