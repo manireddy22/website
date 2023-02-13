@@ -17,8 +17,8 @@ spec:
       containers:
       - name: custom
         image: manipal2209/capstone_01_image:latest
-        imagePullSecrets:
-        - name: regcred
+        imagePullPolicy: Always
+        
         
         
 
