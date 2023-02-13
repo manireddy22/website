@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: custom
-        image: manipal2209/capstone_01_image:latest
+        image: manipal2209/capstone_01_image
         imagePullPolicy: Always
 
         ports:
