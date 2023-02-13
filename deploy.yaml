@@ -14,8 +14,6 @@ spec:
       labels:
         app: custom
     spec:
-      imagePullSecret:
-      - name: my-registry-key
       containers:
       - name: custom
         image: manipal2209/capstone_01_image:latest
